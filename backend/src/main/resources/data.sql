@@ -16,3 +16,6 @@ INSERT INTO tb_user_role (user_id, role_id) VALUES (3, 2);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (3, 3);
 
 INSERT INTO tb_course (name, img_uri, img_gray_uri) VALUES ('Bootcamp HTML', 'https://www.publicdomainpictures.net/pictures/390000/nahled/course-introduction.jpg', 'https://www.publicdomainpictures.net/pictures/360000/nahled/online-learning.jpg');
+
+INSERT INTO tb_offer (edition, start_moment, end_moment, course_id) VALUES ('1.0', TIMESTAMP WITH TIME ZONE '2022-05-16T12:00:00Z', TIMESTAMP WITH TIME ZONE '2022-05-21T02:59:59Z',1);
+INSERT INTO tb_offer (edition, start_moment, end_moment, course_id) VALUES ('2.0', TIMESTAMP WITH TIME ZONE '2022-08-22T12:00:00Z', TIMESTAMP WITH TIME ZONE '2022-08-26T02:59:59Z',1);
