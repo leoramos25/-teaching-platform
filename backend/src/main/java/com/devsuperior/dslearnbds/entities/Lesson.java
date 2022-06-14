@@ -2,6 +2,8 @@ package com.devsuperior.dslearnbds.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,6 +31,10 @@ public abstract class Lesson implements Serializable {
             }
     )
     private Set<Enrollment> enrollmentsDone;
+    @OneToMany(mappedBy = "lesson")
+    private List<Deliver> deliveries = new ArrayList<>();
+    @OneToMany(mappedBy = "lesson")
+    private List<Topic> topics = new ArrayList<>();
     
     protected Lesson() {
     }
@@ -74,6 +80,14 @@ public abstract class Lesson implements Serializable {
     
     public Set<Enrollment> getEnrollmentsDone() {
         return enrollmentsDone;
+    }
+    
+    public List<Deliver> getDeliveries() {
+        return deliveries;
+    }
+    
+    public List<Topic> getTopics() {
+        return topics;
     }
     
     @Override
