@@ -16,6 +16,8 @@ public abstract class Lesson implements Serializable {
     private Long id;
     private String title;
     private Integer position;
+    @ManyToOne
+    @JoinColumn(name = "section_id")
     private Section section;
     @ManyToMany
     @JoinTable(
