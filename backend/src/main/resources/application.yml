@@ -3,3 +3,13 @@ spring:
     active: test
   jpa:
     open-in-view: false
+
+jwt:
+  secret: ${JWT_SECRET:MY_JWT_SECRET}
+  duration: ${JWT_DURATION:86400}
+
+security:
+  oauth2:
+    client:
+      client-id: ${CLIENT_ID:clientId}
+      client-secret: ${CLIENT_SECRET:clientSecret}
