@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
@@ -30,6 +32,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        if (Arrays.asList(env.getActiveProfiles()).contains("test"))
+            http.headers().frameOptions().disable();
+        
         http.authorizeRequests()
                 .antMatchers(PUBLIC_ENDPOINTS).permitAll()
                 .anyRequest().authenticated();

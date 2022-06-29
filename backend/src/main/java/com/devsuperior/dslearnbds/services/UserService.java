@@ -1,8 +1,8 @@
 package com.devsuperior.dslearnbds.services;
 
+import com.devsuperior.dslearnbds.dtos.UserDTO;
 import com.devsuperior.dslearnbds.repositories.UserRepository;
 import com.devsuperior.dslearnbds.services.exceptions.ResourceNotFoundException;
-import com.devsuperior.dslearnbds.dtos.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,12 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     
+    @Autowired
+    private AuthService authService;
+    
     @Transactional(readOnly = true)
     public UserDTO findUserById(Long id) {
+        authService.validateSelfOrAdmin(id);
         var user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return new UserDTO(user);
     }
