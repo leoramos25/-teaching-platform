@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -20,7 +21,7 @@ import java.util.Arrays;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-    private static final String AUTHORIZED_GRANT_TYPES = "password";
+    private static final String[] AUTHORIZED_GRANT_TYPES = {"password", "refresh_token"};
     
     private static final String[] SCOPES = {"read", "write"};
     
@@ -48,6 +49,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private JwtTokenEnhancer tokenEnhancer;
     
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
@@ -60,7 +64,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode(clientSecret))
                 .scopes(SCOPES)
                 .authorizedGrantTypes(AUTHORIZED_GRANT_TYPES)
-                .accessTokenValiditySeconds(tokenDuration);
+                .accessTokenValiditySeconds(tokenDuration)
+                .refreshTokenValiditySeconds(tokenDuration);
     }
     
     @Override
@@ -71,6 +76,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore)
                 .accessTokenConverter(accessTokenConverter)
-                .tokenEnhancer(tokenChain);
+                .tokenEnhancer(tokenChain)
+                .userDetailsService(userDetailsService);
     }
 }
